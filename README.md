@@ -29,3 +29,4 @@ OPCODES
 | 0x3XNN | // Salta l'istruzione successiva se il registro VX è uguale a NN ! if(V[X] == NN) |
 | 0x4XNN | // Salta l'istruzione successiva se il registro VX non è uguale a NN ! if(V[X] != NN) |
 | 0x5XY0 | // Salta l'istruzione successiva se il registro VX è uguale all' registro VY ! if(V[X] == V[Y]) |
+| ... | ... |
