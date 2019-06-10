@@ -18,8 +18,9 @@
 
 
 OPCODES
+
 | OPCODE | Description |
-| :---: |:---: |
+| ----- | ----- |
 | 0x0NNN | // Chiama dal RCA 1802 le istruzioni all'indirizzo NNN ! Non utilizzato |
 | 0x00E0 | // Pulisce lo schermo |
 | 0x00EE | // Ret |
