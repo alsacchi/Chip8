@@ -19,17 +19,17 @@
 
 OPCODES
 
-| OPCODE | Description |
-| ----- | ----- |
-| 0x0NNN | // Chiama dal RCA 1802 le istruzioni all'indirizzo NNN ! Non utilizzato |
-| 0x00E0 | // Pulisce lo schermo |
-| 0x00EE | // Ret |
-| 0x1NNN | // Jmp a NNN |
-| 0x2NNN | // Chiama subroutin a NNN ! *(0xNNN)(); |
-| 0x3XNN | // Salta l'istruzione successiva se il registro VX è uguale a NN ! if(V[X] == NN) |
-| 0x4XNN | // Salta l'istruzione successiva se il registro VX non è uguale a NN ! if(V[X] != NN) |
-| 0x5XY0 | // Salta l'istruzione successiva se il registro VX è uguale all' registro VY ! if(V[X] == V[Y]) |
-| 0x6XNN | // Assegna il valore NN al registro V[X] |
-| 0x7XNN | // Aggiunge il valore NN al registro V[X] (Carry Flag immutata) |
-| 0x8XY0 | // Assegna il valore V[Y] a V[X] |
-| ... | ... |
+| OPCODE | Tipo | Descrizione |
+| ----- | ----- | ----- |
+| 0x0NNN | Call | // Chiama dal RCA 1802 le istruzioni all'indirizzo NNN ! Non utilizzato |
+| 0x00E0 | Display | // Pulisce lo schermo |
+| 0x00EE | Flusso | // Ret |
+| 0x1NNN | Flusso | // Jmp a NNN |
+| 0x2NNN | Flusso | // Chiama subroutin a NNN ! *(0xNNN)(); |
+| 0x3XNN | Condizione | // Salta l'istruzione successiva se il registro VX è uguale a NN ! if(V[X] == NN) |
+| 0x4XNN | Condizione | // Salta l'istruzione successiva se il registro VX non è uguale a NN ! if(V[X] != NN) |
+| 0x5XY0 | Condizione | // Salta l'istruzione successiva se il registro VX è uguale all' registro VY ! if(V[X] == V[Y]) |
+| 0x6XNN | Condizione | // Assegna il valore NN al registro V[X] |
+| 0x7XNN | Condizione | // Aggiunge il valore NN al registro V[X] (Carry Flag immutata) |
+| 0x8XY0 | Assegnazione | // Assegna il valore V[Y] a V[X] |
+| ... | ... | ... |
