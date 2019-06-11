@@ -8,6 +8,7 @@ int setupGraphics();
 int main() {
     using std::cout;
     using std::endl;
+    SDL_Event event;
     if(int result = setupGraphics()) {
         return result;
     }
@@ -19,10 +20,20 @@ int main() {
         if(myChip8.drawFlag) {
             
         }
+        while(SDL_PollEvent(&event)) {
+            switch(event.type) {
+                case SDL_KEYDOWN:
+                    break;
+                case SDL_QUIT:
+                    SDL_DestroyRenderer(ren);
+                    SDL_DestroyWindow(win);
+                    SDL_Quit(); 
+                    break;
+                default:
+                    break;
+            }
+        }
     }
-    SDL_DestroyRenderer(ren);
-    SDL_DestroyWindow(win);
-    SDL_Quit();
     return EXIT_SUCCESS;
 
 }
