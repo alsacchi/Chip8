@@ -1,3 +1,4 @@
+#include <iostream>
 /*
     Architettura CHIP8 {
         Cpu 8 Bit

@@ -29,7 +29,7 @@ OPCODES
 | 0x3XNN | Condizione | // Salta l'istruzione successiva se il registro VX è uguale a NN ! if(V[X] == NN) |
 | 0x4XNN | Condizione | // Salta l'istruzione successiva se il registro VX non è uguale a NN ! if(V[X] != NN) |
 | 0x5XY0 | Condizione | // Salta l'istruzione successiva se il registro VX è uguale all' registro VY ! if(V[X] == V[Y]) |
-| 0x6XNN | Condizione | // Assegna il valore NN al registro V[X] |
-| 0x7XNN | Condizione | // Aggiunge il valore NN al registro V[X] (Carry Flag immutata) |
+| 0x6XNN | Assegnazione | // Assegna il valore NN al registro V[X] |
+| 0x7XNN | Assegnazione | // Aggiunge il valore NN al registro V[X] (Carry Flag immutata) |
 | 0x8XY0 | Assegnazione | // Assegna il valore V[Y] a V[X] |
 | ... | ... | ... |

@@ -4,7 +4,7 @@
 #include <fstream>
 using namespace std;
 //Fontset di 16 caratteri 4x5
-unsigned char chip8_fontset[80] = { 
+unsigned char chip8::chip8_fontset[80] = { 
             0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
             0x20, 0x60, 0x20, 0x20, 0x70, // 1
             0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
@@ -41,7 +41,7 @@ void chip8::initialize() {
     //0x50 = 80;
     //Carico in memoria nei primi 0x50 bytes il fontset
     for(int i = 0; i < 80; i++) {
-        memory[i] = chip8_fontset[i];
+        memory[i] = chip8::chip8_fontset[i];
     }
     //Inizilizzo i due timer a 0
     delay_timer = 0;
@@ -87,6 +87,7 @@ void chip8::emulateCycle() {
             break;
         case 0x1000: // 0x1NNN Salta a NNN
             pc = opcode & 0x0FFF;
+            pc += 2;
             break;
         case 0x2000: // 0x2NNN Chiama subroutin a NNN ! *(0xNNN)();
             stack[sp] = pc;
@@ -94,25 +95,30 @@ void chip8::emulateCycle() {
             pc = opcode & 0x0FFF;
             break;
         case 0x3000: // 0x3XNN Salta l'istruzione successiva se il registro VX è uguale a NN ! if(V[X] == NN)
-            if(V[opcode & 0x0F00] == opcode & 0x00FF) {
-                pc+=2;
+            if(V[opcode & 0x0F00] == (opcode & 0x00FF)) {
+                pc+=4;
             }
+            pc += 2;
             break;
         case 0x4000: // 0x4XNN Salta l'istruzione successiva se il registro VX non è uguale a NN ! if(V[X] != NN)
-            if(V[opcode & 0x0F00] != opcode & 0x00FF) {
-                pc+=2;
+            if(V[opcode & 0x0F00] != (opcode & 0x00FF)) {
+                pc+=4;
             }
+            pc += 2;
             break;
         case 0x5000: // 0x5XY0 Salta l'istruzione successiva se il registro VX è uguale all' registro VY ! if(V[X] == V[Y])
             if(V[opcode & 0x0F00] == V[opcode & 0x00F0]) {
-                pc+=2;
+                pc+=4;
             }
+            pc += 2;
             break;
         case 0x6000: // 0x6XNN Assegna il valore NN al registro V[X]
             V[opcode & 0x0F00] = opcode & 0x00FF;
+            pc += 2;
             break;
         default:
-            cout << "Unknown opcode: " << std::hex << opcode << endl;
+            cout << "["<< std::hex << pc << "]" << "Unknown opcode: " << std::hex << opcode << endl;
+            pc += 2;
             break;
     }
     if(delay_timer > 0) {
