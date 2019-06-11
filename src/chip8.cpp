@@ -113,12 +113,15 @@ void chip8::emulateCycle() {
             pc += 2;
             break;
         case 0x6000: // 0x6XNN Assegna il valore NN al registro V[X]
-            V[opcode & 0x0F00] = opcode & 0x00FF;
+            V[opcode & 0x0F00] = (opcode & 0x00FF);
+            pc += 2;
+            break;
+        case 0x7000: // 0x7XNN Aggiunge il valore NN al registro V[X] (Carry Flag immutata)
+            V[opcode & 0x0F00] += (opcode & 0x00FF);
             pc += 2;
             break;
         default:
             cout << "["<< std::hex << pc << "]" << "Unknown opcode: " << std::hex << opcode << endl;
-            pc += 2;
             break;
     }
     if(delay_timer > 0) {

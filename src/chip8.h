@@ -32,8 +32,7 @@ class chip8 {
         static unsigned char chip8_fontset[80];
 
     public:
-        //Flag drawFlag, se 1 aggiorna lo schermo
-        bool drawFlag = false;
+        bool drawFlag = false; //Flag drawFlag, se 1 aggiorna lo schermo
         void initialize();
         void emulateCycle();
         void loadGame(std::string path);
