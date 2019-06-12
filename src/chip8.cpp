@@ -40,7 +40,7 @@ void chip8::initialize() {
             j++;
         }
     }
-    for(int i = 0; i < 64 * 32; i++) {
+    for(int i = 0; i < (64 * 32); i++) {
         gfx[i] = 0;
     }
     //0x50 = 80;
@@ -83,13 +83,14 @@ void chip8::emulateCycle() {
                 case 0x0000: // 0x00E0 Pulisce lo schermo
                 break;
                 case 0x000E: // 0x00EE Ritorna da una subroutine
-                    pc = stack[sp - 1];
+                    sp--;
+                    pc = stack[sp];
+                    pc += 2;
                 break;
             }
         break;
         case 0x1000: // 0x1NNN Salta a NNN
             pc = opcode & 0x0FFF;
-            pc += 2;
         break;
         case 0x2000: // 0x2NNN Chiama subroutin a NNN ! *(0xNNN)();
             stack[sp] = pc;
@@ -158,7 +159,7 @@ void chip8::emulateCycle() {
                     V[(opcode & 0x0F00) >> 8] -= V[(opcode & 0x00F0) >> 4];
                     pc += 2;
                 break;
-                case 0x0006: // 0x8XY6 Immagazina il bit meno siginificativo di V[X] in V[0xF] per poi fare lo shift di 1 a destra di V[X]
+                case 0x0006: // 0x8XY6 Immagazzina il bit meno siginificativo di V[X] in V[0xF] per poi fare lo shift di 1 a destra di V[X]
                     V[0xF] = V[(opcode & 0x0F00) >> 8] & 0x1;
                     V[(opcode & 0x0F00) >> 8] >>= 1;
                     pc += 2;
@@ -172,7 +173,7 @@ void chip8::emulateCycle() {
                     V[(opcode & 0x0F00) >> 8] = V[(opcode & 0x00F0) >> 4] - V[(opcode & 0x0F00) >> 8];
                     pc += 2;
                 break;
-                case 0x000E: // 0x8XYE Immagazina il bit più significativo di V[X] in V[0xF] per poi fare lo shift di 1 a sinistra di V[X]
+                case 0x000E: // 0x8XYE Immagazzina il bit più significativo di V[X] in V[0xF] per poi fare lo shift di 1 a sinistra di V[X]
                     V[0xF] = V[(opcode & 0x0F00) >> 8] & 0x80;
                     V[(opcode & 0x0F00) >> 8] <<= 1;
                     pc += 2;
@@ -180,6 +181,7 @@ void chip8::emulateCycle() {
                 default:
                 break;
             }
+        break;
         case 0x9000: // 0x9XY0 Salta l'istruzione successiva se V[X] è diverso da V[Y]
             if(V[(opcode & 0x0F00) >> 8] != V[(opcode & 0x00F0) >> 4]) {
                 pc += 4;
@@ -199,13 +201,113 @@ void chip8::emulateCycle() {
             V[(opcode & 0x0F00) >> 8] = (rand() % 255) & (opcode & 0x00FF);
             pc += 2;
         break;
-        case 0xD000: // 0xDXYN Disegna uno sprite alle coordinate V[X] e V[Y] largo 8 pixel e alto N pixel,
-                     // Ogni riga di 8 pixel è letta bit per bit dalla memoria partendo dall' indirizzo I
-                     // il valore di I non cambia. VF è impostato a 1 se un qualsiasi pixel viene capovolto
-                     // invece 0 se non succede
-            //draw(V[(opcode & 0x0F00) >> 8], V[(opcode & 0x00F0) >> 4], opcode & 0x000F);
+        case 0xD000: {
+            // 0xDXYN Disegna uno sprite alle coordinate V[X] e V[Y] largo 8 pixel e alto N pixel,
+            // Ogni riga di 8 pixel è letta  dalla memoria partendo dall' indirizzo I,
+            // il valore di I non cambia. VF è impostato a 1 se un qualsiasi pixel viene capovolto
+            // invece 0 se non succede
+            
+            unsigned short x = V[(opcode & 0x0F00) >> 8]; // Posizione dello sprite x
+            unsigned short y = V[(opcode & 0x00F0) >> 4]; // Posizione dello sprite y
+            unsigned short height = opcode & 0x000F;  // Altezza dello sprite
+            unsigned short pixel; // Valore del pixel
+            V[0xF] = 0; // Reset registro FLAG
+
+            for (int yline = 0; yline < height; yline++) { // Righe 
+                pixel = memory[I + yline]; // Riga dello sprite in memoria
+                for(int xline = 0; xline < 8; xline++) { // Colonne
+                    if((pixel & (0x80 >> xline)) != 0) { // Controllo bit per bit lo sprite e controllo se un bit è 1
+                        if(gfx[(x + xline + ((y + yline) * 64))] == 1) { // Controlo se il pixel sul display è 1 
+                            V[0xF] = 1; // Se si, visto che si va a capovolgere lo stato di questo pixel, imposto la V[0xF] a 1
+                        }
+                        gfx[x + xline + ((y + yline) * 64)] ^= 1; // Imposto il valore del pixel
+                    }
+                }
+            }
+
+            drawFlag = true; // Imposto la flag per aggiornare il display
             pc += 2;
-            break;
+        }
+        break;
+        case 0xE000:
+            switch(opcode & 0x00FF) {
+                case 0x009E: // 0xEX9E Salta l'istruzione successiva se il tasto con il valore V[X] è premuto
+                    if(key[V[(opcode & 0x0F00) >> 8]] != 0) {
+                        pc += 4;
+                    } else {
+                        pc += 2;
+                    }
+                break;
+                case 0x00A1: // 0xEXA1 Salta l'istruzione successiva se il tasto con il valore V[X] non è premuto
+                    if(key[V[(opcode & 0x0F00) >> 8]] == 0) {
+                        pc += 4;
+                    } else {
+                        pc += 2;
+                    }
+                break;
+                default:
+                break;
+            }
+        break;
+        case 0xF000:
+            switch(opcode & 0x00FF) {
+                case 0x0007: // 0xFX07 Imposta V[X] con il valore del delay_timer
+                    V[(opcode & 0x0F00) >> 8] = delay_timer;
+                    pc += 2;
+                break;
+                case 0x000A: { // 0xFX0A Aspetta per la pressione di un tasto, Immagazzina il valore del tasto in V[X]. L'esecuzione è stoppata fino alla pressione del tasto
+                    bool pressed = false;
+                    for(int i = 0; i < 16; i++) {
+                        if(key[i] != 0) {
+                            V[(opcode & 0x0F00) >> 8] = i;
+                            pressed = true;
+                        }
+                    }
+                    if(!pressed) {
+                        return;
+                    }
+                    pc += 2;
+                }
+                break;
+                case 0x0015: // 0xFX15 Assegna il valore di V[X] al delay_timer
+                    delay_timer = V[(opcode & 0x0F00) >> 8];
+                    pc += 2;
+                break;
+                case 0x0018: // 0xFX18 Assegna il valore di V[X] al sound_timer
+                    sound_timer = V[(opcode & 0x0F00) >> 8];
+                    pc += 2;
+                break;
+                case 0x001E: // 0xFX1E Aggiunge ad I il valore di V[X]
+                    I += V[(opcode & 0x0F00) >> 8];
+                    pc += 2;
+                break;
+                case 0x0029: // 0xFX29 Imposta ad I la location dello sprite del carattere in V[X].
+                             // I Caratteri sono rappresentati da un font 4x5
+                    I = V[(opcode & 0x0F00) >> 8] * 0x5;
+                    pc += 2;
+                break;
+                case 0x0033: // 0xFX33 Immagazzina la rappresentazione BCD(Binary Coded Decimal) di V[X] agli indirizzi I, I + 1, I + 2
+                    memory[I]     = V[(opcode & 0x0F00) >> 8] / 100;
+                    memory[I + 1] = (V[(opcode & 0x0F00) >> 8] / 10) % 10;
+                    memory[I + 2] = V[(opcode & 0x0F00) >> 8] % 10;
+                    pc += 2;
+                break;
+                case 0x0055: // 0xFX55 Immagazzina i registri a partire da V0 fino a VX in memoria partendo dall'indirizzo I.
+                    for(int i = 0; i <= V[(opcode & 0x0F00) >> 8]; i++) {
+                        memory[I + i] = V[i];
+                    }
+                    pc += 2;
+                break;
+                case 0x0065: // 0xFX55 Riempe i registri a partire da V0 fino a VX con il contenuto della memoria partendo dall'indirizzo I.
+                    for(int i = 0; i <= V[(opcode & 0x0F00) >> 8]; i++) {
+                        V[i] = memory[I + i];
+                    }
+                    pc += 2;
+                break;
+                default:
+                break;
+            }
+        break;
         default:
             cout << "["<< std::hex << pc << "]" << "Unknown opcode: " << std::hex << opcode << endl;
         break;
@@ -250,4 +352,5 @@ void chip8::printMemory(int start, int end) {
             cout << std::hex << static_cast<int>(memory[i]) << " ";
             j++;
         }
+    cout << endl;
 }

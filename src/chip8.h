@@ -23,15 +23,15 @@ class chip8 {
         unsigned char V[16];
         unsigned short I;
         unsigned short pc;
-        unsigned char gfx[64 * 32];
         unsigned char delay_timer;
         unsigned char sound_timer; 
         unsigned short stack[16];
         unsigned short sp;
-        unsigned char key[16];
         static unsigned char chip8_fontset[80];
 
     public:
+        unsigned char key[16];
+        unsigned char gfx[64 * 32];
         bool drawFlag = false; //Flag drawFlag, se 1 aggiorna lo schermo
         void initialize();
         void emulateCycle();
