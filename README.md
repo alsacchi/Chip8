@@ -16,7 +16,14 @@
     35 Opcode
 
 
+### How to Build:
+```
+    git clone https://github.com/alsacchi/Chip8.git
+    cd chip8/src
+    make
+```
 
+----
 OPCODES
 
 | OPCODE | Tipo | Descrizione |

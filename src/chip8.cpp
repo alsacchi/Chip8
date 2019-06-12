@@ -30,7 +30,6 @@ void chip8::initialize() {
     opcode = 0;
     I = 0;
     sp = 0;
-    srand(time(0));
     //Inizializzo la memoria, i registri e lo stack a 0x00
     for(int i = 0, j = 0; i < 4096; i++) {
         memory[i] = '\0';
@@ -46,12 +45,13 @@ void chip8::initialize() {
     //0x50 = 80;
     //Carico in memoria nei primi 0x50 bytes il fontset
     for(int i = 0; i < 80; i++) {
-        memory[i] = chip8::chip8_fontset[i];
+        memory[i] = chip8_fontset[i];
     }
     //Inizilizzo i due timer a 0
     delay_timer = 0;
     sound_timer = 0;
     cout << "Initialized" << endl;
+    srand(time(NULL));
 }
 //Ciclo operativo:
 //Fetch OPCODE
@@ -89,9 +89,7 @@ void chip8::emulateCycle() {
                     pc += 2;
                 break;
                 case 0x000E: // 0x00EE Ritorna da una subroutine
-                    if(sp > 0) {
-                        sp--;
-                    }
+                    sp--;
                     pc = stack[sp];
                     pc += 2;
                 break;

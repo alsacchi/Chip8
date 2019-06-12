@@ -40,6 +40,10 @@ int main(int argc, char **argv) {
         while(SDL_PollEvent(&event)) {
             switch(event.type) {
                 case SDL_KEYDOWN:
+                    if(event.key.keysym.sym == SDLK_F1) {
+                        myChip8.initialize();
+                        myChip8.loadGame(argv[1]);
+                    }
                     for(int i = 0; i < 16; i++) {
                         if(event.key.keysym.sym == keymap[i]) {
                             myChip8.key[i] = 1;
@@ -64,7 +68,7 @@ int main(int argc, char **argv) {
                 break;
             }
         }
-        //SDL_Delay(20);
+        SDL_Delay(5);
     }
     return EXIT_SUCCESS;
 
