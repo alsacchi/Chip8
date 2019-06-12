@@ -5,7 +5,9 @@ chip8 myChip8;
 SDL_Window *win;
 SDL_Renderer *ren;
 int setupGraphics();
+void draw();
 int main() {
+    bool exit = false;
     using std::cout;
     using std::endl;
     SDL_Event event;
@@ -15,16 +17,17 @@ int main() {
     myChip8.initialize();
     myChip8.loadGame("../roms/pong.ch8");
     myChip8.printMemory(0, 512 + 0xff);
-    while(true) {
+    while((!exit)) {
         myChip8.emulateCycle();
         if(myChip8.drawFlag) {
-            
+            draw();
         }
         while(SDL_PollEvent(&event)) {
             switch(event.type) {
                 case SDL_KEYDOWN:
                     break;
                 case SDL_QUIT:
+                    exit = true;
                     SDL_DestroyRenderer(ren);
                     SDL_DestroyWindow(win);
                     SDL_Quit(); 
@@ -33,6 +36,8 @@ int main() {
                     break;
             }
         }
+        SDL_RenderPresent(ren);
+        SDL_Delay(1000);
     }
     return EXIT_SUCCESS;
 
@@ -55,5 +60,11 @@ int setupGraphics() {
         cout << "SDL Renderer ERROR: " << SDL_GetError() << endl;
         return EXIT_FAILURE;
     }
+    SDL_SetRenderDrawColor(ren, 0, 0, 0, 0);
+    SDL_RenderClear(ren);
+SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
     return 0;
+}
+void draw() {
+    myChip8.drawFlag = false;
 }
