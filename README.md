@@ -1,5 +1,5 @@
 # Emulatore CHIP8
-## (WIP)
+## Technically completed, sound not present, crash may occur!
 [Architettura CHIP8](https://en.wikipedia.org/wiki/CHIP-8#Virtual_machine_description)
 
     Cpu 8 Bit
