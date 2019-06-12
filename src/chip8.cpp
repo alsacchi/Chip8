@@ -81,9 +81,16 @@ void chip8::emulateCycle() {
         case 0x0000: // Visto che il primo byte non mi permette di distinguere i due opcode che iniziano con 0x00
             switch(opcode & 0x000F) { // Prendo gli opcode che inziano con 0x00 e controllo l'ultima parte per distinguerli
                 case 0x0000: // 0x00E0 Pulisce lo schermo
+                    for(int i = 0; i < 2048; i++) {
+                        gfx[i] = 0;
+                    }
+                    drawFlag = true;
+                    pc += 2;
                 break;
                 case 0x000E: // 0x00EE Ritorna da una subroutine
-                    sp--;
+                    if(sp > 0) {
+                        sp--;
+                    }
                     pc = stack[sp];
                     pc += 2;
                 break;

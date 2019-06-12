@@ -6,21 +6,11 @@ int setupGraphics(SDL_Window* &win, SDL_Renderer* &ren, SDL_Texture* &tex);
 void draw(SDL_Window* &win, SDL_Renderer* &ren, SDL_Texture* &tex);
 
 unsigned char keymap[16] = {
-    SDLK_x,
-    SDLK_1,
-    SDLK_2,
-    SDLK_3,
-    SDLK_q,
-    SDLK_w,
-    SDLK_e,
-    SDLK_a,
-    SDLK_s,
-    SDLK_d,
-    SDLK_z,
-    SDLK_c,
-    SDLK_4,
-    SDLK_r,
-    SDLK_f,
+    SDLK_x, SDLK_1, SDLK_2,
+    SDLK_3, SDLK_q, SDLK_w,
+    SDLK_e, SDLK_a, SDLK_s, 
+    SDLK_d, SDLK_z, SDLK_c, 
+    SDLK_4, SDLK_r, SDLK_f, 
     SDLK_v,
 };
 
@@ -74,7 +64,7 @@ int main(int argc, char **argv) {
                 break;
             }
         }
-        SDL_Delay(1);
+        SDL_Delay(60);
     }
     return EXIT_SUCCESS;
 
@@ -87,7 +77,7 @@ int setupGraphics(SDL_Window* &win, SDL_Renderer* &ren, SDL_Texture* &tex) {
         cout << "SDL Init ERROR: " << SDL_GetError() << endl;
         return EXIT_FAILURE;
     }
-    win = SDL_CreateWindow("Chip-8!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 300, 300, SDL_WINDOW_SHOWN);
+    win = SDL_CreateWindow("Chip-8!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 720, SDL_WINDOW_SHOWN);
     if(win == nullptr) {
         cout << "SDL Window ERROR: " << SDL_GetError() << endl;
         return EXIT_FAILURE;
