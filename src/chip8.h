@@ -18,21 +18,21 @@
 
 class chip8 {
     private:
-        unsigned short opcode;
-        unsigned char memory[4096];
-        unsigned char V[16];
-        unsigned short I;
-        unsigned short pc;
-        unsigned char delay_timer;
-        unsigned char sound_timer; 
-        unsigned short stack[16];
-        unsigned short sp;
-        static unsigned char chip8_fontset[80];
+        uint16_t opcode;
+        uint8_t memory[4096];
+        uint8_t V[16];
+        uint16_t I;
+        uint16_t pc;
+        uint8_t delay_timer;
+        uint8_t sound_timer; 
+        uint16_t stack[16];
+        uint16_t sp;
+        static uint8_t chip8_fontset[80];
 
     public:
-        unsigned char key[16];
-        unsigned char gfx[64 * 32];
-        bool drawFlag = false; //Flag drawFlag, se 1 aggiorna lo schermo
+        uint8_t key[16];
+        uint8_t gfx[64 * 32];
+        bool drawFlag; //Flag drawFlag, se 1 aggiorna lo schermo
         void initialize();
         void emulateCycle();
         void loadGame(std::string path);

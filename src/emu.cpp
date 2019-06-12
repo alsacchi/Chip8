@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
                 break;
             }
         }
-        SDL_Delay(60);
+        //SDL_Delay(20);
     }
     return EXIT_SUCCESS;
 
@@ -82,7 +82,7 @@ int setupGraphics(SDL_Window* &win, SDL_Renderer* &ren, SDL_Texture* &tex) {
         cout << "SDL Window ERROR: " << SDL_GetError() << endl;
         return EXIT_FAILURE;
     }
-    ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
     if(ren == nullptr) {
         cout << "SDL Renderer ERROR: " << SDL_GetError() << endl;
         return EXIT_FAILURE;
