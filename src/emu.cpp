@@ -22,6 +22,7 @@ int main(int argc, char **argv) {
     SDL_Texture *tex;
     bool exit = false;
     SDL_Event event;
+    int delay = 5;
     if(argc < 2) {
         cout << "Usage ./chip8 <ROM PATH>" << endl;
         return EXIT_FAILURE;
@@ -44,6 +45,9 @@ int main(int argc, char **argv) {
                         myChip8.initialize();
                         myChip8.loadGame(argv[1]);
                     }
+                    if(event.key.keysym.sym == SDLK_SPACE) {
+                        delay = 1;
+                    }
                     for(int i = 0; i < 16; i++) {
                         if(event.key.keysym.sym == keymap[i]) {
                             myChip8.key[i] = 1;
@@ -51,6 +55,9 @@ int main(int argc, char **argv) {
                     }
                 break;
                 case SDL_KEYUP:
+                    if(event.key.keysym.sym == SDLK_SPACE) {
+                        delay = 5;
+                    }
                     for(int i = 0; i < 16; i++) {
                         if(event.key.keysym.sym == keymap[i]) {
                             myChip8.key[i] = 0;
@@ -68,7 +75,7 @@ int main(int argc, char **argv) {
                 break;
             }
         }
-        SDL_Delay(5);
+        SDL_Delay(delay);
     }
     return EXIT_SUCCESS;
 

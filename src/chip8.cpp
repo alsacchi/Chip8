@@ -4,7 +4,7 @@
 #include <fstream>
 using namespace std;
 //Fontset di 16 caratteri 4x5
-uint8_t chip8::chip8_fontset[80] = { 
+uint8_t chip8::chip8_fontset[80] = {
             0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
             0x20, 0x60, 0x20, 0x20, 0x70, // 1
             0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
@@ -81,7 +81,6 @@ void chip8::emulateCycle() {
         case 0x0000: // Visto che il primo byte non mi permette di distinguere i due opcode che iniziano con 0x00
             switch(opcode & 0x000F) { // Prendo gli opcode che inziano con 0x00 e controllo l'ultima parte per distinguerli
                 case 0x0000: // 0x00E0 Pulisce lo schermo
-
                     for(int i = 0; i < 2048; i++) {
                         gfx[i] = 0;
                     }
@@ -216,13 +215,12 @@ void chip8::emulateCycle() {
             V[(opcode & 0x0F00) >> 8] = (rand() % (0xFF + 1)) & (opcode & 0x00FF);
             pc += 2;
         break;
-        case 0xD000: {
+        case 0xD000: { // 0xDXYN
             uint8_t x = V[(opcode & 0x0F00) >> 8]; // Posizione dello sprite x
-            uint8_t y = V[(opcode & 0x00F0) >> 4]; // Posizione dello sprite y
+            uint8_t y = V[(opcode & 0x00F0) >> 4] + 1; // Posizione dello sprite y
             uint8_t height = opcode & 0x000F;  // Altezza dello sprite
             uint8_t pixel; // Valore del pixel
             V[0xF] = 0; // Reset registro FLAG
-
             for (int yline = 0; yline < height; yline++) { // Righe 
                 pixel = memory[I + yline]; // Riga dello sprite in memoria
                 for(int xline = 0; xline < 8; xline++) { // Colonne
@@ -316,7 +314,7 @@ void chip8::emulateCycle() {
                     I += ((opcode & 0x0F00) >> 8) + 1;
                     pc += 2;
                 break;
-                case 0x0065: // 0xFX55 Riempe i registri a partire da V0 fino a VX con il contenuto della memoria partendo dall'indirizzo I.
+                case 0x0065: // 0xFX65 Riempe i registri a partire da V0 fino a VX con il contenuto della memoria partendo dall'indirizzo I.
                     for(int i = 0; i <= V[(opcode & 0x0F00) >> 8]; i++) {
                         V[i] = memory[I + i];
                     }
