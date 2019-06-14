@@ -31,7 +31,7 @@ cd chip8/src
 ```
 ---
 ### Keypad:
-
+#### Keyboard
 |KEYS|KEYS|KEYS|KEYS|
 |:---:|:---:|:---:|:---:|
 | 1 | 2 | 3 | 4 |
@@ -39,6 +39,13 @@ cd chip8/src
 | A | S | D | F |
 | Z | X | C | V |
 
+#### Chip8
+|KEYS|KEYS|KEYS|KEYS|
+|:---:|:---:|:---:|:---:|
+| 1 | 2 | 3 | C |
+| 4 | 5 | 6 | D |
+| 7 | 8 | 9 | E |
+| A | 0 | B | F |
 
 ----
 OPCODES
