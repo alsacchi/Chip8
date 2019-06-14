@@ -216,10 +216,10 @@ void chip8::emulateCycle() {
             pc += 2;
         break;
         case 0xD000: { // 0xDXYN
-            uint8_t x = V[(opcode & 0x0F00) >> 8]; // Posizione dello sprite x
-            uint8_t y = V[(opcode & 0x00F0) >> 4] + 1; // Posizione dello sprite y
-            uint8_t height = opcode & 0x000F;  // Altezza dello sprite
-            uint8_t pixel; // Valore del pixel
+            int x = V[(opcode & 0x0F00) >> 8]; // Posizione dello sprite x
+            int y = V[(opcode & 0x00F0) >> 4]; // Posizione dello sprite y
+            int height = opcode & 0x000F;  // Altezza dello sprite
+            int pixel; // Valore del pixel
             V[0xF] = 0; // Reset registro FLAG
             for (int yline = 0; yline < height; yline++) { // Righe 
                 pixel = memory[I + yline]; // Riga dello sprite in memoria
@@ -308,7 +308,7 @@ void chip8::emulateCycle() {
                     pc += 2;
                 break;
                 case 0x0055: // 0xFX55 Immagazzina i registri a partire da V0 fino a VX in memoria partendo dall'indirizzo I.
-                    for(int i = 0; i <= V[(opcode & 0x0F00) >> 8]; i++) {
+                    for(int i = 0; i <= (opcode & 0x0F00) >> 8; i++) {
                         memory[I + i] = V[i];
                     }
                     I += ((opcode & 0x0F00) >> 8) + 1;

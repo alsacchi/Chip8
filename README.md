@@ -47,6 +47,8 @@ cd chip8/src
 | 7 | 8 | 9 | E |
 | A | 0 | B | F |
 
+
+SPACE for SPEED BOOST
 ----
 OPCODES
 
