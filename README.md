@@ -18,9 +18,16 @@
 
 ### How to Build:
 ```
-    git clone https://github.com/alsacchi/Chip8.git
-    cd chip8/src
-    make
+git clone https://github.com/alsacchi/Chip8.git
+cd chip8/src
+make
+```
+---
+### How to use
+After you have built the chip8 emulator you can execute it with the binary 'chip8' inside src/ folder
+```
+cd chip8/src
+./chip8 <ROM PATH>
 ```
 ---
 ### Keypad:
