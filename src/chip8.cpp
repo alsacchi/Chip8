@@ -315,7 +315,7 @@ void chip8::emulateCycle() {
                     pc += 2;
                 break;
                 case 0x0065: // 0xFX65 Riempe i registri a partire da V0 fino a VX con il contenuto della memoria partendo dall'indirizzo I.
-                    for(int i = 0; i <= V[(opcode & 0x0F00) >> 8]; i++) {
+                    for(int i = 0; i <= (opcode & 0x0F00) >> 8; i++) {
                         V[i] = memory[I + i];
                     }
                     I += ((opcode & 0x0F00) >> 8) + 1;
