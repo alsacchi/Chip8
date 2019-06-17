@@ -22,7 +22,7 @@ uint8_t chip8::chip8_fontset[80] = {
             0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
             0xF0, 0x80, 0xF0, 0x80, 0x80  // F
         };
-
+bool debug = false;
 //Inizializzo il PC, la memoria, l'instruction register e lo stack pointer
 void chip8::initialize() { 
     drawFlag = false;
@@ -61,7 +61,9 @@ void chip8::emulateCycle() {
     //Formo l'opcode spostando di 8 bit il primo byte a sinistra
     //e faccio l'or con il secondo byte per unirlo al primo
     opcode = memory[pc] << 8 | memory[pc + 1];
-    cout << "["<< std::hex << pc << "]" << "Executing opcode: " << std::hex << opcode << endl;
+    if(debug) {
+        cout << "["<< std::hex << pc << "]" << "Executing opcode: " << std::hex << opcode << endl;
+    }
     /*
     OPCODES {
         0x0NNN // Chiama dal RCA 1802 le istruzioni all'indirizzo NNN ! Non utilizzato
@@ -93,7 +95,9 @@ void chip8::emulateCycle() {
                     pc += 2;
                 break;
                 default:
-                    cout << "[0x0000]" << "Unknown opcode: " << std::hex << opcode << endl;
+                    if(debug) {
+                        cout << "[0x0000]" << "Unknown opcode: " << std::hex << opcode << endl;
+                    }   
                     pc += 2;
                 break;
             }
@@ -192,7 +196,9 @@ void chip8::emulateCycle() {
                     pc += 2;
                 break;
                 default:
-                    cout << "[0x8000]" << "Unknown opcode: " << std::hex << opcode << endl;
+                    if(debug) {
+                        cout << "[0x8000]" << "Unknown opcode: " << std::hex << opcode << endl;
+                    }   
                     pc += 2;
                 break;
             }
@@ -254,7 +260,9 @@ void chip8::emulateCycle() {
                     }
                 break;
                 default:
-                    cout << "[0xE000]" << "Unknown opcode: " << std::hex << opcode << endl;
+                    if(debug) {
+                        cout << "[0xE000]" << "Unknown opcode: " << std::hex << opcode << endl;
+                    }   
                     pc += 2;
                 break;
             }
@@ -322,13 +330,17 @@ void chip8::emulateCycle() {
                     pc += 2;
                 break;
                 default:
-                    cout << "[0xF000]" << "Unknown opcode: " << std::hex << opcode << endl;
+                    if(debug) {
+                        cout << "[0xF000]" << "Unknown opcode: " << std::hex << opcode << endl;
+                    }   
                     pc += 2;
                 break;
             }
         break;
         default:
-            cout << "["<< std::hex << pc << "]" << "Unknown opcode: " << std::hex << opcode << endl;
+            if(debug) {
+                cout << "[" << pc << "]" << "Unknown opcode: " << std::hex << opcode << endl;
+            }   
             pc += 2;
         break;
     }
