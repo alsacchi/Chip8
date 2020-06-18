@@ -70,7 +70,7 @@ void chip8::emulateCycle() {
         0x00E0 // Pulisce lo schermo
         0x00EE // Ritorna da una subroutine
         0x1NNN // Salta a NNN
-        0x2NNN // Chiama subroutin a NNN ! *(0xNNN)();
+        0x2NNN // Chiama subroutine a NNN ! *(0xNNN)();
         0x3XNN // Salta l'istruzione successiva se il registro VX è uguale a NN ! if(V[X] == NN)
         0x4XNN // Salta l'istruzione successiva se il registro VX non è uguale a NN ! if(V[X] != NN)
         0x5XY0 // Salta l'istruzione successiva se il registro VX è uguale all' registro VY ! if(V[X] == V[Y])
@@ -105,7 +105,7 @@ void chip8::emulateCycle() {
         case 0x1000: // 0x1NNN Salta a NNN
             pc = opcode & 0x0FFF;
         break;
-        case 0x2000: // 0x2NNN Chiama subroutin a NNN ! *(0xNNN)();
+        case 0x2000: // 0x2NNN Chiama subroutine a NNN ! *(0xNNN)();
             stack[sp] = pc;
             sp++;
             pc = opcode & 0x0FFF;
