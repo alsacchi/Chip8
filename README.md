@@ -7,7 +7,7 @@
     16 registri 8 bit V0....VF, VF registro FLAG per alcune istruzioni
     Address Register I, 16 bit
     Stack a 24 livelli
-    Due timer che contano fino a 0:
+    Due timer:
         sound_timer e delay timer
     Input con un tastierino da 16 'pulsanti'
     Display:
