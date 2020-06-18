@@ -54,11 +54,11 @@ OPCODES
 
 | OPCODE | Tipo | Descrizione |
 | ----- | ----- | ----- |
-| 0x0NNN | Call | // Chiama dal RCA 1802 le istruzioni all'indirizzo NNN ! Non utilizzato |
+| 0x0NNN | Call | // Chiama "Machine code routine" all'indirizzo NNN ! Non utilizzato nella maggior parte di ROM |
 | 0x00E0 | Display | // Pulisce lo schermo |
 | 0x00EE | Flusso | // Ret |
 | 0x1NNN | Flusso | // Jmp a NNN |
-| 0x2NNN | Flusso | // Chiama subroutin a NNN ! *(0xNNN)(); |
+| 0x2NNN | Flusso | // Chiama subroutine a NNN ! *(0xNNN)(); |
 | 0x3XNN | Condizione | // Salta l'istruzione successiva se il registro VX è uguale a NN ! if(V[X] == NN) |
 | 0x4XNN | Condizione | // Salta l'istruzione successiva se il registro VX non è uguale a NN ! if(V[X] != NN) |
 | 0x5XY0 | Condizione | // Salta l'istruzione successiva se il registro VX è uguale all' registro VY ! if(V[X] == V[Y]) |
